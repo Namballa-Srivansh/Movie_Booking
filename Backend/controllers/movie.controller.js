@@ -1,28 +1,55 @@
 const Movie = require('../models/movie.model');
+const movieService = require('../services/movie.service');
+const { errResponseBody, successResponseBody } = require('../utils/responsebody');
 
 // controller function to create a movie and return movie created
 
 const createMovie = async (req, res) => {
     try {
-        const movie = await Movie.create(req.body);
-        res.status(201).json({
-            success: true,
-            error: {},
-            data: movie,
-            message: "Movie created successfully"
-        });
+        const movie = await movieService.createMovie(req.body);
+        successResponseBody.data = movie;
+        successResponseBody.message = "Movie created successfully";
+        res.status(201).json(successResponseBody);
     }
     catch (err) {
         console.log("Error in creating movie", err);
-        res.status(500).json({
-            success: false,
-            error: err,
-            data: {},
-            message: "Unable to create movie"
-        });
+        returnres.status(500).json(errResponseBody);
+    }
+}
+
+const deleteMovie = async (req, res) => {
+    try {
+        const response = await movieService.deleteMovie(req.params.id);
+        successResponseBody.data = response;
+        res.status(200).json(successResponseBody);
+         
+    } catch (err) {
+        console.log("Error in deleting movie", err);
+        returnres.status(500).json(errResponseBody);
+    }
+}
+
+const getMovie = async (req, res) => {
+    try {
+        const response = await movieService.getMovieById(req);
+        if(response.err){
+            errResponseBody.err = response.err;
+            errResponseBody.message = "Cannot find movie with given id";
+            return res.status(response.code).json(errResponseBody);
+        }
+
+        successResponseBody.data = response;
+        res.status(200).json(successResponseBody);
+
+    } catch (err) {
+        console.log("Error in fetching movie", err);
+        return res.status(500).json(errResponseBody);
     }
 }
 
 module.exports = {
-    createMovie
+    createMovie,
+    deleteMovie,
+    getMovie
 };
+
