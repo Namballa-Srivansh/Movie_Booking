@@ -1,9 +1,11 @@
 const movieController = require('../controllers/movie.controller');
+const MovieMiddleware = require('../middlewares/movie.middleware');
 
 const routes = (app) => {
     //routes function takes express app object as parameter
     app.post(
         '/mba/api/v1/movies', 
+        MovieMiddleware.validateMovieCreateRequest,
         movieController.createMovie
     );
 
