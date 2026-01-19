@@ -10,12 +10,10 @@ const {
 const createTheatre = async (req, res) => {
   try {
     const response = await theatreService.createTheatre(req.body);
-    if(response.err){
-        errResponseBody.error = response.err;
-        const statusCode = response.code || 422;
-        const message = statusCode === 409 ? "Theatre already exists" : "Validation failed on few parameters of the req body";
-        errResponseBody.message = message;
-        return res.status(statusCode).json(errResponseBody);
+    if (response.err) {
+      errResponseBody.error = response.err;
+      errResponseBody.message = "Validation failed on few parameters of the request body";
+      return res.status(response.code || 422).json(errResponseBody);
     }
     successResponseBody.data = response;
     successResponseBody.message = "Theatre created successfully";
@@ -27,6 +25,46 @@ const createTheatre = async (req, res) => {
   }
 };
 
+const deleteTheatre = async (req, res) => {
+  try {
+    const response = await theatreService.deleteTheatre(req.params.id);
+    if (response.err) {
+      errResponseBody.error = response.err;
+      errResponseBody.message = "Theatre not found";
+      return res.status(404).json(errResponseBody);
+    }
+    successResponseBody.data = response;
+    successResponseBody.message = "Theatre deleted successfully";
+    res.status(200).json(successResponseBody);
+  } catch (err) {
+    errResponseBody.error = err;
+    errResponseBody.message = "Error in deleting theatre";
+    res.status(500).json(errResponseBody);
+  }
+}
+
+const getTheatre = async (req, res) => {
+  try {
+    const response = await theatreService.getTheatre(req.params.id);
+    if (response.err) {
+      errResponseBody.error = response.err;
+      errResponseBody.message = "Theatre not found";
+      return res.status(404).json(errResponseBody);
+    }
+    successResponseBody.data = response;
+    successResponseBody.message = "Theatre fetched successfully";
+    res.status(200).json(successResponseBody);
+  } catch (err) {
+    errResponseBody.error = err;
+    errResponseBody.message = "Error in fetching theatre";
+    res.status(500).json(errResponseBody);
+  }
+}
+
+
+
 module.exports = {
   createTheatre,
+  deleteTheatre,
+  getTheatre,
 };

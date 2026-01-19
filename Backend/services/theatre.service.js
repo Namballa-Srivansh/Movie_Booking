@@ -25,6 +25,38 @@ const createTheatre = async (data) => {
     }
 }
 
+const deleteTheatre = async(id) => {
+  try {
+    const response = await Theatre.findByIdAndDelete(id);
+    if(!response) {
+      return {
+        err: "Theatre not found",
+        code: 404
+      }
+    }
+    return response;
+  } catch(err) {
+    throw new Error("Error in deleting theatre");
+  }
+}
+
+const getTheatre = async (id) => {
+  try {
+    const response = await Theatre.findById(id);
+    if (!response) {
+      return {
+        err: "Theatre not found",
+        code: 404,
+      };
+    }
+    return response;
+  } catch (err) {
+    throw new Error("Error in fetching theatre");
+  }
+};
+
 module.exports = {
-    createTheatre
+    createTheatre,
+    deleteTheatre,
+    getTheatre
 }

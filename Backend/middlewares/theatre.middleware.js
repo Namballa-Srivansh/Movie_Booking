@@ -1,4 +1,4 @@
-const {errResponseBody} = require('../utils/response.util');
+const {errResponseBody} = require('../utils/responsebody');
 
 const validateTheatreCreateRequest = (req, res, next) => {
 
