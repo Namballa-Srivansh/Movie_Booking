@@ -17,10 +17,17 @@ const routes = (app) => {
         "/mba/api/v1/theatres/:id",
         theatreController.getTheatre
     )
+
     app.get(
         "/mba/api/v1/theatres",
         theatreController.getAllTheatres
     )
+
+    app.patch(
+        "/mba/api/v1/theatres/:id/movies",
+        theatreMiddleware.validateUpdateMoviesRequest,
+        theatreController.updateMovies
+    );
 }
 
 module.exports = routes;
