@@ -61,10 +61,29 @@ const getTheatre = async (req, res) => {
   }
 }
 
+const getAllTheatres = async (req, res) => {
+  try {
+    const response = await theatreService.getAllTheatres()
+    if(!response) {
+      errResponseBody.error = response.err
+      errResponseBody.message = "Error in Fetching Theatres"
+      return res.status(404).json(errResponseBody)
+    }
+    successResponseBody.data = response
+    successResponseBody.message = "Theatre Fetched Successfully"
+    res.status(200).json(successResponseBody)
+  } catch (err) {
+    errResponseBody.error = err;
+    errResponseBody.message = "Error in fetching theatre";
+    res.status(500).json(errResponseBody);
+  }
+}
+
 
 
 module.exports = {
   createTheatre,
   deleteTheatre,
   getTheatre,
+  getAllTheatres
 };
