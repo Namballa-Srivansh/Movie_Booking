@@ -3,10 +3,11 @@ const bodyParser = require('body-parser');
 const env = require('dotenv').config({quiet:true})
 const mongoose = require('mongoose');
 
-const app = express();
-
 const MovieRoutes = require('./routes/movie.routes');
 const TheatreRoutes = require('./routes/theatre.routes');
+
+env.config()
+const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
