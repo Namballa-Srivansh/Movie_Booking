@@ -57,7 +57,17 @@ const getTheatre = async (id) => {
 
 const getAllTheatres = async(data) => {
     try {
-        const response = await Theatre.find({})
+        let query = {};
+        if(data && data.city) {
+            query.city = data.city;
+        }
+        if(data && data.pincode) {
+            query.pincode = data.pincode;
+        }
+        if(data && data.name) {
+            query.name = data.name;
+        }
+        const response = await Theatre.find(query)
         if(!response) {
             return {
                 err: "Theatre not found",

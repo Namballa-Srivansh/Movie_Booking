@@ -63,7 +63,7 @@ const getTheatre = async (req, res) => {
 
 const getAllTheatres = async (req, res) => {
   try {
-    const response = await theatreService.getAllTheatres()
+    const response = await theatreService.getAllTheatres(req.query)
     if(!response) {
       errResponseBody.error = response.err
       errResponseBody.message = "Error in Fetching Theatres"
