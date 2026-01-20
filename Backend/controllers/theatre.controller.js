@@ -43,6 +43,24 @@ const deleteTheatre = async (req, res) => {
   }
 }
 
+const updateTheatre = async (req, res) => {
+  try {
+    const response = await theatreService.updateTheatre(req.params.id, req.body);
+    if(response.err) {
+      errResponseBody.error = response.err;
+      errResponseBody.message = "Theatre not found";
+      return res.status(404).json(errResponsebody)
+    }
+    successResponseBody.data = response;
+    successResponseBody.message = "Theatre upadated successfully";
+    res.status(200).json(successResponseBody)
+  } catch(err) {
+      errResponseBody.error = err;
+      errResponseBody.message = "Error in updating theatre";
+      res.status(500).json(errResponseBody);
+  }
+}
+
 const getTheatre = async (req, res) => {
   try {
     const response = await theatreService.getTheatre(req.params.id);
@@ -104,6 +122,7 @@ module.exports = {
   createTheatre,
   deleteTheatre,
   getTheatre,
+  updateTheatre,
   getAllTheatres,
   updateMovies
 };

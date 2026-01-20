@@ -40,6 +40,21 @@ const deleteTheatre = async(id) => {
   }
 }
 
+const updateTheatre = async(id, data) => {
+  try {
+    const response = await Theatre.findByIdAndUpdate(id, data, {new: true, runValidators: true});
+    if(!response) {
+      return {
+        err: "Theatre not found",
+        code: 404
+      };
+    }
+    return response;
+  } catch(err) {
+    throw new Error("Error in updating theatre");
+  }
+}
+
 const getTheatre = async (id) => {
   try {
     const response = await Theatre.findById(id);
@@ -118,6 +133,7 @@ const updateMoviesInTheatres = async(theatreId, movieIds, insert) => {
 module.exports = {
     createTheatre,
     deleteTheatre,
+    updateTheatre,
     getTheatre,
     getAllTheatres,
     updateMoviesInTheatres
