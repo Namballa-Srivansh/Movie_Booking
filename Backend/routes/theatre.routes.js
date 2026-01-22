@@ -17,9 +17,31 @@ const routes = (app) => {
         "/mba/api/v1/theatres/:id",
         theatreController.getTheatre
     )
+
     app.get(
         "/mba/api/v1/theatres",
         theatreController.getAllTheatres
+    )
+
+    app.patch(
+        "/mba/api/v1/theatres/:id",
+        theatreController.updateTheatre
+    )
+
+    app.patch(
+        "/mba/api/v1/theatres/:id/movies",
+        theatreMiddleware.validateUpdateMoviesRequest,
+        theatreController.updateMovies
+    );
+    
+    app.get(
+        "/mba/api/v1/theatres/:id/movies",
+        theatreController.getMovies
+    );
+
+    app.get(
+        "/mba/api/v1/theatres/:theatreId/movies/:movieId",
+        theatreController.checkMovie
     )
 }
 
