@@ -1,5 +1,5 @@
 const theatreController = require('../controllers/theatre.controller');
-const theatreMiddleware = require('../middlewares/theatre.middleware');
+const theatreMiddleware = require('../middlewares/theatre.middlewares');
 
 const routes = (app) => {
     app.post(
