@@ -1,4 +1,5 @@
 const userService = require("../services/user.service");
+const jwt = require("jsonwebtoken");
 const {
   successResponseBody,
   errResponseBody,
@@ -20,6 +21,39 @@ const signup = async (req, res) => {
   }
 };
 
+const signin = async (req, res) => {
+  try {
+    const user = await userService.getUserByemail(req.body.email);
+    const isValidPassword = await user.isValidPassword(req.body.password);
+    if(!isValidPassword) {
+      throw{err: "Invalid password for the given email", code: 401}
+    }
+
+    const token = jwt.sign(
+      {id: user.id, email: user.email},
+      process.env.AUTH_KEY,
+      {expiresIn: '1h'}
+    )
+
+    successResponseBody.message = "Successfully logged in";
+    successResponseBody.data = {
+      email: user.email,
+      role: user.userRole,
+      status: user.userStatus,
+      token: token
+    }
+    return res.status(200).json(successResponseBody);
+  } catch(err) {
+    if(err.err) {
+      errResponseBody.err = err.err
+      return res.status(err.code).json(errResponseBody)
+    }
+    errResponseBody.err = err;
+    return res.status(500).json(errResponseBody);
+  }
+}
+
 module.exports = {
   signup,
+  signin,
 };
