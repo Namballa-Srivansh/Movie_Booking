@@ -20,6 +20,22 @@ const validateSignupRequest = async (req, res, next) => {
   next()
 };
 
+const validateSigninRequest = async (req, res, next) => {
+
+  if(!req.body.email) {
+    errResponseBody.err = "No email provided for sign in";
+    return res.status(400).json(errResponseBody);  
+  }
+
+  if(!req.body.password) {
+    errResponseBody.err = "No password provided for sign in";
+    return res.status(400).json(errResponseBody);
+  }
+
+  next();
+}
+
 module.exports = {
   validateSignupRequest,
+  validateSigninRequest,
 };
