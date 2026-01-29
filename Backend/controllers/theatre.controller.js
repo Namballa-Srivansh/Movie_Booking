@@ -1,4 +1,5 @@
 const Theatre = require("../models/theatre.model");
+const {STATUS} = require("../utils/constants")
 const theatreService = require("../services/theatre.service");
 const {
   errResponseBody,
@@ -13,15 +14,16 @@ const createTheatre = async (req, res) => {
     if (response.err) {
       errResponseBody.error = response.err;
       errResponseBody.message = "Validation failed on few parameters of the request body";
-      return res.status(response.code || 422).json(errResponseBody);
+      return res.status(response.code).json(errResponseBody);
     }
     successResponseBody.data = response;
     successResponseBody.message = "Theatre created successfully";
-    res.status(201).json(successResponseBody);
+    res.status(STATUS.CREATED).json(successResponseBody);
   } catch (err) {
+    console.log(err)
     errResponseBody.error = err;
     errResponseBody.message = "Error in creating theatre";
-    res.status(500).json(errResponseBody);
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
   }
 };
 
@@ -31,15 +33,15 @@ const deleteTheatre = async (req, res) => {
     if (response.err) {
       errResponseBody.error = response.err;
       errResponseBody.message = "Theatre not found";
-      return res.status(404).json(errResponseBody);
+      return res.status(STATUS.NOT_FOUND).json(errResponseBody);
     }
     successResponseBody.data = response;
     successResponseBody.message = "Theatre deleted successfully";
-    res.status(200).json(successResponseBody);
+    res.status(STATUS.OK).json(successResponseBody);
   } catch (err) {
     errResponseBody.error = err;
     errResponseBody.message = "Error in deleting theatre";
-    res.status(500).json(errResponseBody);
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
   }
 }
 
@@ -49,15 +51,15 @@ const updateTheatre = async (req, res) => {
     if(response.err) {
       errResponseBody.error = response.err;
       errResponseBody.message = "Theatre not found";
-      return res.status(404).json(errResponsebody)
+      return res.status(STATUS.NOT_FOUND).json(errResponsebody)
     }
     successResponseBody.data = response;
     successResponseBody.message = "Theatre upadated successfully";
-    res.status(200).json(successResponseBody)
+    res.status(STATUS.OK).json(successResponseBody)
   } catch(err) {
       errResponseBody.error = err;
       errResponseBody.message = "Error in updating theatre";
-      res.status(500).json(errResponseBody);
+      res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
   }
 }
 
@@ -67,15 +69,15 @@ const getTheatre = async (req, res) => {
     if (response.err) {
       errResponseBody.error = response.err;
       errResponseBody.message = "Theatre not found";
-      return res.status(404).json(errResponseBody);
+      return res.status(STATUS.NOT_FOUND).json(errResponseBody);
     }
     successResponseBody.data = response;
     successResponseBody.message = "Theatre fetched successfully";
-    res.status(200).json(successResponseBody);
+    res.status(STATUS.OK).json(successResponseBody);
   } catch (err) {
     errResponseBody.error = err;
     errResponseBody.message = "Error in fetching theatre";
-    res.status(500).json(errResponseBody);
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
   }
 }
 
@@ -85,15 +87,15 @@ const getAllTheatres = async (req, res) => {
     if(!response) {
       errResponseBody.error = response.err
       errResponseBody.message = "Error in Fetching Theatres"
-      return res.status(404).json(errResponseBody)
+      return res.status(STATUS.NOT_FOUND).json(errResponseBody)
     }
     successResponseBody.data = response
     successResponseBody.message = "Theatre Fetched Successfully"
-    res.status(200).json(successResponseBody)
+    res.status(STATUS.OK).json(successResponseBody)
   } catch (err) {
     errResponseBody.error = err;
     errResponseBody.message = "Error in fetching theatre";
-    res.status(500).json(errResponseBody);
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
   }
 }
 
@@ -110,11 +112,11 @@ const updateMovies = async (req, res) => {
     }
     successResponseBody.data = response;
     successResponseBody.message = "Succesfully updated Movies in Theatres"
-    return res.status(200).json(successResponseBody)
+    return res.status(STATUS.OK).json(successResponseBody)
 
   } catch(err) {
     errResponseBody.err = err
-    return res.status(500).json(errResponseBody)
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody)
   }
 }
 
@@ -124,14 +126,14 @@ const getMovies = async (req, res) => {
     if(!response) {
       errResponseBody.err = response.err
       errResponseBody.message = "Error in fetching movies in theatre"
-      return res.status(404).json(errResponseBody)
+      return res.status(STATUS.NOT_FOUND).json(errResponseBody)
     }
     successResponseBody.data = response;
     successResponseBody.message = "Movies fetched successfully in theatre"
-    return res.status(200).json(successResponseBody)
+    return res.status(STATUS.OK).json(successResponseBody)
   } catch(err) {
     errResponseBody.err = err;
-    return res.status(500).json(errResponseBody)
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody)
   }
 }
 
@@ -145,10 +147,10 @@ const checkMovie = async (req, res) => {
     }
     successResponseBody.data = response;
     successResponseBody.message = "Movie check successful in theatre"
-    return res.status(200).json(successResponseBody)
+    return res.status(STATUS.OK).json(successResponseBody)
   } catch(err) {
     errResponseBody.err = err;
-    return res.status(500).json(errResponseBody);
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
   }
 }
 

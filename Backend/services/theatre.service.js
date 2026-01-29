@@ -1,5 +1,6 @@
 const Theatre = require("../models/theatre.model");
 const Movie = require("../models/movie.model");
+const {STATUS} = require("../utils/constants")
 
 const createTheatre = async (data) => {
   try {
@@ -12,11 +13,11 @@ const createTheatre = async (data) => {
     return response;
   } catch (err) {
     if (err.name === "ValidationError") {
-      let err = {};
+      let errors = {};
       Object.keys(err.errors).forEach((key) => {
-        err[key] = err.errors[key].message;
+        errors[key] = err.errors[key].message;
       });
-      return { err: err, code: 422 };
+      return { err: errors, code: STATUS.UNPROCESSABLE_ENTITY };
     }
     if (err.code === 11000) {
       return {
