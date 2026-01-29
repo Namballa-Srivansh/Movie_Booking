@@ -1,3 +1,5 @@
+const {STATUS} = require("../utils/constants");
+
 const badRequestResponse = {
   success: false,
   err: "",
@@ -11,13 +13,13 @@ const validateMovieCreateRequest = async (req, res, next) => {
   if (!req.body.name) {
     badRequestResponse.err =
       "The name of the movie is not present in the request sent";
-    return res.status(400).json(badRequestResponse);
+    return res.status(STATUS.BAD_REQUEST).json(badRequestResponse);
   }
 
   if (!req.body.description) {
     badRequestResponse.err =
       "The description of the movie is not present in the request sent";
-    return res.status(400).json(badRequestResponse);
+    return res.status(STATUS.BAD_REQUEST).json(badRequestResponse);
   }
 
   if (
@@ -27,31 +29,31 @@ const validateMovieCreateRequest = async (req, res, next) => {
   ) {
     badRequestResponse.err =
       "The casts of the movie is not present in the request sent";
-    return res.status(400).json(badRequestResponse);
+    return res.status(STATUS.BAD_REQUEST).json(badRequestResponse);
   }
 
   if (!req.body.trailerUrl) {
     badRequestResponse.err =
       "The trailerUrl of the movie is not present in the request sent";
-    return res.status(400).json(badRequestResponse);
+    return res.status(STATUS.BAD_REQUEST).json(badRequestResponse);
   }
 
   if (!req.body.language || req.body.language.trim().length === 0) {
     badRequestResponse.err =
       "The language of the movie is not present in the request sent";
-    return res.status(400).json(badRequestResponse);
+    return res.status(STATUS.BAD_REQUEST).json(badRequestResponse);
   }
 
   if (!req.body.releaseDate) {
     badRequestResponse.err =
       "The releaseDate of the movie is not present in the request sent";
-    return res.status(400).json(badRequestResponse);
+    return res.status(STATUS.BAD_REQUEST).json(badRequestResponse);
   }
 
   if (!req.body.director || req.body.director.trim().length === 0) {
     badRequestResponse.err =
       "The director of the movie is not present in the request sent";
-    return res.status(400).json(badRequestResponse);
+    return res.status(STATUS.BAD_REQUEST).json(badRequestResponse);
   }
 
   next();
