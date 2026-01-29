@@ -54,7 +54,7 @@ const updateTheatre = async (id, data) => {
     if (!response) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
     return response;
