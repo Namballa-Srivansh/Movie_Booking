@@ -31,8 +31,9 @@ const deleteMovie = async (id) => {
         code: STATUS.NOT_FOUND,
       };
     }
+    return response;
   } catch (err) {
-    throw error;
+    throw err;
   }
 };
 
