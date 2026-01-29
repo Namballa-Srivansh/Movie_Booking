@@ -69,7 +69,7 @@ const getTheatre = async (id) => {
     if (!response) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
     return response;
@@ -105,7 +105,7 @@ const getAllTheatres = async (data) => {
     if (!response) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
     return response;
@@ -143,7 +143,7 @@ const getMoviesInATheatre = async(id) => {
     if(!theatre) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       }
     }
     return theatre
@@ -158,7 +158,7 @@ const checkMovieInATheatre = async(theatreId, movieId) => {
     if(!response) {
       return {
         err: "Movie not found in Theatre",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       }
     }
     return response.movies.indexOf(movieId) !== -1;
