@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const { USER_STATUS, USER_ROLE } = require("../utils/constants");
+const {STATUS} = require("../utils/constants");
 
 const createUser = async (data) => {
   try {
@@ -66,7 +67,7 @@ const updateUserRoleOrStatus = async (data, userId) => {
     if(!response) {
       throw {
         err: "No user found for the given id",
-        code: 404
+        code: STATUS.NOT_FOUND
       }
     }
     return response;
@@ -79,7 +80,7 @@ const updateUserRoleOrStatus = async (data, userId) => {
       });
       throw {
         err: errors,
-        code: 400
+        code: STATUS.BAD_REQUEST
       }
     }
     throw err;
