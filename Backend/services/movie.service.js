@@ -1,4 +1,5 @@
 const Movie = require("../models/movie.model");
+const {STATUS} = require("../utils/constants")
 
 const createMovie = async (data) => {
   try {
@@ -11,7 +12,7 @@ const createMovie = async (data) => {
         err[key] = error.errors[key].message;
       });
       console.log(err);
-      return { err: err, code: 422 };
+      return { err: err, code: STATUS.UNPROCESSABLE_ENTITY };
     } else if (error.code === 11000) {
       const field = Object.keys(error.keyPattern)[0];
       return { err: `A movie with this ${field} already exists`, code: 409 };
@@ -27,7 +28,7 @@ const deleteMovie = async (id) => {
     if (!response) {
       return {
         err: "No movie found for the corresponding id",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
   } catch (err) {
@@ -40,7 +41,7 @@ const getMovieById = async (req, res) => {
   if (!movie) {
     return {
       err: "Movie not found",
-      code: 404,
+      code: STATUS.NOT_FOUND,
     };
   }
   return movie;
@@ -55,7 +56,7 @@ const updateMovieById = async (id, data) => {
     if (!movie) {
       return {
         err: "Movie not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
     return movie;
@@ -66,7 +67,7 @@ const updateMovieById = async (id, data) => {
         err[key] = error.errors[key].message;
       });
       console.log(err);
-      return { err: err, code: 422 };
+      return { err: err, code: STATUS.UNPROCESSABLE_ENTITY };
     } else {
       throw error;
     }
@@ -83,7 +84,7 @@ const fetchMovies = async (filter) => {
   if (!movies) {
     return {
       err: "No movies found",
-      code: 404,
+      code: STATUS.NOT_FOUND,
     };
   }
   return movies;
