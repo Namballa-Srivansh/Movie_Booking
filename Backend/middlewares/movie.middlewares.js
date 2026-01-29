@@ -30,9 +30,9 @@ const validateMovieCreateRequest = async (req, res, next) => {
     return res.status(400).json(badRequestResponse);
   }
 
-  if (!req.body.trailerUrls) {
+  if (!req.body.trailerUrl) {
     badRequestResponse.err =
-      "The trailerUrls of the movie is not present in the request sent";
+      "The trailerUrl of the movie is not present in the request sent";
     return res.status(400).json(badRequestResponse);
   }
 

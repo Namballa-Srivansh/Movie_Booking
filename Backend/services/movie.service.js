@@ -12,6 +12,9 @@ const createMovie = async (data) => {
       });
       console.log(err);
       return { err: err, code: 422 };
+    } else if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern)[0];
+      return { err: `A movie with this ${field} already exists`, code: 409 };
     } else {
       throw error;
     }
