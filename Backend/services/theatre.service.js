@@ -1,5 +1,6 @@
 const Theatre = require("../models/theatre.model");
 const Movie = require("../models/movie.model");
+const {STATUS} = require("../utils/constants")
 
 const createTheatre = async (data) => {
   try {
@@ -12,11 +13,11 @@ const createTheatre = async (data) => {
     return response;
   } catch (err) {
     if (err.name === "ValidationError") {
-      let err = {};
+      let errors = {};
       Object.keys(err.errors).forEach((key) => {
-        err[key] = err.errors[key].message;
+        errors[key] = err.errors[key].message;
       });
-      return { err: err, code: 422 };
+      return { err: errors, code: STATUS.UNPROCESSABLE_ENTITY };
     }
     if (err.code === 11000) {
       return {
@@ -53,7 +54,7 @@ const updateTheatre = async (id, data) => {
     if (!response) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
     return response;
@@ -68,7 +69,7 @@ const getTheatre = async (id) => {
     if (!response) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
     return response;
@@ -104,7 +105,7 @@ const getAllTheatres = async (data) => {
     if (!response) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       };
     }
     return response;
@@ -142,7 +143,7 @@ const getMoviesInATheatre = async(id) => {
     if(!theatre) {
       return {
         err: "Theatre not found",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       }
     }
     return theatre
@@ -157,7 +158,7 @@ const checkMovieInATheatre = async(theatreId, movieId) => {
     if(!response) {
       return {
         err: "Movie not found in Theatre",
-        code: 404,
+        code: STATUS.NOT_FOUND,
       }
     }
     return response.movies.indexOf(movieId) !== -1;

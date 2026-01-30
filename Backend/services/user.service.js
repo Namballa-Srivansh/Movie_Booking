@@ -1,6 +1,6 @@
 const User = require("../models/user.model");
 const { USER_STATUS, USER_ROLE } = require("../utils/constants");
-const {STATUS} = require("../utils/constants");
+const { STATUS } = require("../utils/constants");
 
 const createUser = async (data) => {
   try {
@@ -34,8 +34,8 @@ const getUserByemail = async (email) => {
     const response = await User.findOne({
       email: email,
     });
-    if(!response) {
-      throw {err: "No user for the given email", code: 404}
+    if (!response) {
+      throw { err: "No user for the given email", code: 404 };
     }
     return response;
   } catch (err) {
@@ -46,50 +46,52 @@ const getUserByemail = async (email) => {
 const getUserById = async (id) => {
   try {
     const user = await User.findById(id);
-    if(!user) {
-      throw{err: "No user found for the given id", code: 404};
+    if (!user) {
+      throw { err: "No user found for the given id", code: 404 };
     }
-    return user
-  } catch(err) {
+    return user;
+  } catch (err) {
     throw err;
   }
-}
+};
 
 const updateUserRoleOrStatus = async (data, userId) => {
   try {
     let updateQuery = {};
-    
-    if(data.userRole) updateQuery.userRole = data.userRole;
-    if(data.userStatus) updateQuery.userStatus = data.userStatus;
 
-    let response = await User.findByIdAndUpdate(userId, updateQuery, {new: true, runValidators: true});
+    if (data.userRole) updateQuery.userRole = data.userRole;
+    if (data.userStatus) updateQuery.userStatus = data.userStatus;
 
-    if(!response) {
+    let response = await User.findByIdAndUpdate(userId, updateQuery, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!response) {
       throw {
         err: "No user found for the given id",
-        code: STATUS.NOT_FOUND
-      }
+        code: STATUS.NOT_FOUND,
+      };
     }
     return response;
-
-  } catch(err) {
-    if(err.name === "ValidationError") {
+  } catch (err) {
+    if (err.name === "ValidationError") {
       let errors = {};
-      Object.keys(err.errors).forEach(key => {
-        errors[key] = err.errors[key].message
+      Object.keys(err.errors).forEach((key) => {
+        errors[key] = err.errors[key].message;
       });
       throw {
         err: errors,
-        code: STATUS.BAD_REQUEST
-      }
+        code: STATUS.BAD_REQUEST,
+      };
     }
     throw err;
   }
-}
+};
 
 module.exports = {
   createUser,
   getUserByemail,
   getUserById,
-  updateUserRoleOrStatus
+  updateUserRoleOrStatus,
 };
