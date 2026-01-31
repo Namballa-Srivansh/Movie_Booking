@@ -34,7 +34,42 @@ const getShows = async (req, res) => {
     }
 }
 
+const destroy = async (req, res) => {
+    try {
+        const response = await showService.deleteShow(req.params.id);
+        successResponseBody.data = response;
+        successResponseBody.message = "Successfully deleted the show";
+        return res.status(STATUS.OK).json(successResponseBody);
+    } catch(error) {
+        if(error.err) {
+            errResponseBody.err = error.err;
+            return res.status(error.code).json(errResponseBody);
+        }
+        errResponseBody.err = error;
+        return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
+    }
+}
+
+const update = async (req, res) => {
+    try {
+        const response = await showService.updateShow(req.params.id, req.body);
+        successResponseBody.data = response;
+        successResponseBody.message = "Successfully updated the show";
+        return res.status(STATUS.OK).json(successResponseBody);
+    } catch(error) {
+        console.log(error);
+        if(error.err) {
+            errResponseBody.err = error.err;
+            return res.status(error.code).json(errResponseBody);
+        }
+        errResponseBody.err = error;
+        return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
+    }
+}
+
 module.exports = {
     create,
     getShows,
+    destroy,
+    update
 }
