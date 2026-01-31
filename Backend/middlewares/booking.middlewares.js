@@ -59,7 +59,7 @@ const validateBookingCreateRequest = async (req, res, next) => {
 
 const canChangeStatus = async (req, res, next) => {
     const user = await userService.getUserById(req.user);
-    if(user.userRole == USER_ROLE.customer && req.body.status && req.body.status !== BOOKING_STATUS.cancelled) {
+    if(user.userRole == USER_ROLE.customer && req.body.status && req.body.status != BOOKING_STATUS.cancelled) {
         errResponseBody.err = "You are not allowed to change the booking status";
         return res.status(STATUS.UNAUTHORISED).json(errResponseBody)
     }
