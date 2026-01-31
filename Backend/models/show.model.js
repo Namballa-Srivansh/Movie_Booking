@@ -18,13 +18,15 @@ const showSchema = new mongoose.Schema({
         required: true,
     },
     price: {
-        type: number,
+        type: Number,
         required: true,
     },
     format: {
         type: String,
     }
 }, {timestamps: true});
+
+showSchema.index({theatreId: 1, movieId: 1, timings: 1}, {unique: true});
 
 const Show = mongoose.model("Show", showSchema);
 
