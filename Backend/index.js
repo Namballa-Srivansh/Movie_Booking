@@ -7,6 +7,8 @@ const MovieRoutes = require('./routes/movie.routes');
 const TheatreRoutes = require('./routes/theatre.routes');
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes")
+const bookingRoutes = require("./routes/booking.routes");
+const showRoutes = require("./routes/show.routes");
 
 const app = express();
 
@@ -19,10 +21,12 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-MovieRoutes(app); // invoking movie routes function and passing express app object
-TheatreRoutes(app); // invoking theatre routes function and passing express app object
-authRoutes(app); //invoking auth routes
-userRoutes(app); //invoking user Routes
+MovieRoutes(app);       // invoking movie routes function and passing express app object
+TheatreRoutes(app);    // invoking theatre routes function and passing express app object
+authRoutes(app);      // invoking auth routes
+userRoutes(app);     // invoking user routes
+bookingRoutes(app)  // invoking booking routes
+showRoutes(app)    // invoking show routes
 
 app.listen(process.env.PORT, async () => {
   console.log(`Server is running at ${process.env.PORT}`);
