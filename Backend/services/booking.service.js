@@ -1,20 +1,28 @@
 const Booking = require("../models/booking.model");
 const {STATUS} = require("../utils/constants")
+const Show = require("../models/show.model")
 
 const createBooking = async (data) => {
     try {
+        const show = await Show.findOne({
+            movieId: data.movieId, 
+            theatreId: data.theatreId, 
+            timings: data.timings
+        });
+        data.totalCost = data.noOfSeats*show.price;
         const response = await Booking.create(data);
-        return response;
-    } catch(err) {
-        console.log(err)
-        if(err.name == "ValidationError") {
-            let error = {};
-            Object.keys(err.errors).forEach(key => {
-                error[key] = err.errors[key].message;
-            })
-            throw {error: err, code: STATUS.UNPROCESSABLE_ENTITY}
+        await show.save();
+        return response.populate('movieId theatreId');
+    } catch (error) {
+        console.log(error);
+        if(error.name == 'ValidationError') {
+            let err = {};
+            Object.keys(error.errors).forEach(key => {
+                err[key] = error.errors[key].message;
+            });
+            throw {err: err, code: STATUS.UNPROCESSABLE_ENTITY};
         }
-        throw err
+        throw error;
     }
 }
 
