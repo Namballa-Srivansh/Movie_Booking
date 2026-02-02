@@ -1,5 +1,3 @@
-// Factory functions that create fresh response objects for each use
-
 const getErrorResponseBody = () => ({
   error: {},
   data: {},
@@ -14,7 +12,6 @@ const getSuccessResponseBody = () => ({
   success: true,
 });
 
-// Keep old exports for backward compatibility
 const errResponseBody = {
   error: {},
   data: {},
