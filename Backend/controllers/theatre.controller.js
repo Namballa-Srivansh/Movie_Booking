@@ -10,7 +10,7 @@ const {
 
 const createTheatre = async (req, res) => {
   try {
-    const response = await theatreService.createTheatre(req.body);
+    const response = await theatreService.createTheatre({...req.body, owner: req.user});
     if (response.err) {
       errResponseBody.error = response.err;
       errResponseBody.message =
