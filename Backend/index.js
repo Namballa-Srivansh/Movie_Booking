@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const env = require('dotenv').config({quiet:true})
+const cors = require("cors")
 const mongoose = require('mongoose');
 
 const MovieRoutes = require('./routes/movie.routes');
@@ -15,6 +16,13 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 
 mongoose.set("debug", true);
 
