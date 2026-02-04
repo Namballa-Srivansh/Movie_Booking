@@ -11,12 +11,6 @@ const routes = (app) => {
   );
 
   app.get(
-    "/mba/api/v1/user",
-    authMiddlewares.isAuthenticated,
-    userController.getByEmail,
-  );
-
-  app.get(
     "/mba/api/v1/user/verify",
     userController.verifyUser,
   )
