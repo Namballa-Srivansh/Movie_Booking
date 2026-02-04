@@ -12,6 +12,7 @@ const routes = (app) => {
 
   app.get(
     "/mba/api/v1/user/verify",
+    authMiddlewares.isAuthenticated,
     userController.verifyUser,
   )
 

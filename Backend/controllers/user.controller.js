@@ -43,9 +43,9 @@ const update = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   try {
-    const response = await userService.getUserByemail(req.body.email);
+    const response = await userService.getUserById(req.user);
     successResponseBody.data = response;
-    successResponseBody.message = "User existing";
+    successResponseBody.message = "User verified";
     return res.status(STATUS.OK).json(successResponseBody);
   } catch (err) {
     if (err.err) {
