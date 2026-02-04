@@ -16,7 +16,7 @@ const routes = (app) => {
     userController.getByEmail,
   );
 
-  app.post(
+  app.get(
     "/mba/api/v1/user/verify",
     userController.verifyUser,
   )
