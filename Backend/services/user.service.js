@@ -29,6 +29,20 @@ const createUser = async (data) => {
   }
 };
 
+const getUserByemail = async (email) => {
+  try {
+    const response = await User.findOne({
+      email: email,
+    });
+    if (!response) {
+      throw { err: "No user for the given email", code: 404 };
+    }
+    return response;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const getUserById = async (id) => {
   try {
     const user = await User.findById(id);
