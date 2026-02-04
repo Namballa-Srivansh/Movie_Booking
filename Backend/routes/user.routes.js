@@ -7,8 +7,24 @@ const routes = (app) => {
     "/mba/api/v1/user/:id",
     authMiddlewares.isAuthenticated,
     userMiddlewares.validateUpdateUserRequest,
-    authMiddlewares.isAdmin,
     userController.update,
+  );
+
+  app.get(
+    "/mba/api/v1/user",
+    authMiddlewares.isAuthenticated,
+    userController.getByEmail,
+  );
+
+  app.post(
+    "/mba/api/v1/user/verify",
+    userController.verifyUser,
+  )
+
+  app.get(
+    "/mba/api/v1/user/:id",
+    authMiddlewares.isAuthenticated,
+    userController.getById,
   );
 };
 
