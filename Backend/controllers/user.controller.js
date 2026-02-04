@@ -5,22 +5,6 @@ const {
 } = require("../utils/responsebody");
 const { STATUS } = require("../utils/constants");
 
-const getByEmail = async (req, res) => {
-  try {
-    const response = await userService.getUserByemail(req.body.email);
-    successResponseBody.data = response;
-    successResponseBody.message = "Successfully fetched the user";
-    return res.status(STATUS.OK).json(successResponseBody);
-  } catch (err) {
-    if (err.err) {
-      errResponseBody.err = err.err;
-      return res.status(err.code).json(errResponseBody);
-    }
-    errResponseBody.err = err;
-    return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
-  }
-};
-
 const getById = async (req, res) => {
   try {
     const response = await userService.getUserById(req.params.id);
@@ -75,7 +59,6 @@ const verifyUser = async (req, res) => {
 
 module.exports = {
   update,
-  getByEmail,
   getById,
   verifyUser,
 };

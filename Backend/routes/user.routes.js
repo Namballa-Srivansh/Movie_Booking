@@ -10,12 +10,6 @@ const routes = (app) => {
     userController.update,
   );
 
-  app.get(
-    "/mba/api/v1/user",
-    authMiddlewares.isAuthenticated,
-    userController.getByEmail,
-  );
-
   app.post(
     "/mba/api/v1/user/verify",
     userController.verifyUser,
