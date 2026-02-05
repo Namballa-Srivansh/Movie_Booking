@@ -62,6 +62,8 @@ const updateUserRoleOrStatus = async (data, userId) => {
     if (data.userRole) updateQuery.userRole = data.userRole;
     if (data.userStatus) updateQuery.userStatus = data.userStatus;
 
+    if (data.name) updateQuery.name = data.name; 
+
     let response = await User.findByIdAndUpdate(userId, updateQuery, {
       new: true,
       runValidators: true,
