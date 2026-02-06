@@ -6,7 +6,7 @@ const routes = (app) => {
     app.post(
         "/mba/api/v1/shows",
         authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
+        authMiddlewares.isAdminOrOwner,
         showMiddlewares.validateCreateShowRequest,
         showController.create
     )
@@ -19,14 +19,14 @@ const routes = (app) => {
     app.delete(
         "/mba/api/v1/shows/:id",
         authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
+        authMiddlewares.isAdminOrOwner,
         showController.destroy
     )
 
     app.patch(
         "/mba/api/v1/shows/:id",
         authMiddlewares.isAuthenticated,
-        authMiddlewares.isAdminOrClient,
+        authMiddlewares.isAdminOrOwner,
         showMiddlewares.validateUpdateShowRequest,
         showController.update
     )

@@ -7,7 +7,7 @@ const USER_STATUS = {
 const USER_ROLE = {
   customer: "CUSTOMER",
   admin: "ADMIN",
-  client: "CLIENT",
+  owner: "OWNER",
 };
 
 const STATUS_CODES = {

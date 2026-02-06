@@ -90,24 +90,24 @@ const isAdmin = async (req, res, next) => {
   next();
 };
 
-const isClient = async (req, res, next) => {
+const isOwner = async (req, res, next) => {
   const user = await userService.getUserById(req.user);
-  if (user.userRole !== USER_ROLE.client) {
+  if (user.userRole !== USER_ROLE.owner) {
     errResponseBody.err =
-      "User is not an client, cannot proceed with the request";
+      "User is not an owner, cannot proceed with the request";
     return res.status(STATUS.UNAUTHORISED).json(errResponseBody);
   }
   next();
 };
 
-const isAdminOrClient = async (req, res, next) => {
+const isAdminOrOwner = async (req, res, next) => {
   const user = await userService.getUserById(req.user);
-  if (user.userRole !== USER_ROLE.admin && user.userRole !== USER_ROLE.client) {
+  if (user.userRole !== USER_ROLE.admin && user.userRole !== USER_ROLE.owner) {
     const response = {
       error: {},
       data: {},
       message:
-        "User is neither a client nor an admin, cannot proceed with the request",
+        "User is neither a owner nor an admin, cannot proceed with the request",
       success: false,
     };
     return res.status(STATUS.UNAUTHORISED).json(response);
@@ -121,6 +121,6 @@ module.exports = {
   isAuthenticated,
   validateResetPasswordRequest,
   isAdmin,
-  isClient,
-  isAdminOrClient,
+  isOwner,
+  isAdminOrOwner,
 };

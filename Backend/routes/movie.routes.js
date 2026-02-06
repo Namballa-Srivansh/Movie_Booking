@@ -7,7 +7,7 @@ const routes = (app) => {
   app.post(
     "/mba/api/v1/movies",
     authMiddleware.isAuthenticated,
-    authMiddleware.isAdminOrClient,
+    authMiddleware.isAdminOrOwner,
     MovieMiddleware.validateMovieCreateRequest,
     movieController.createMovie,
   );
@@ -15,7 +15,7 @@ const routes = (app) => {
   app.delete(
     "/mba/api/v1/movies/:id",
     authMiddleware.isAuthenticated,
-    authMiddleware.isAdminOrClient,
+    authMiddleware.isAdminOrOwner,
     movieController.deleteMovie
   );
 
@@ -27,14 +27,14 @@ const routes = (app) => {
   app.put(
     "/mba/api/v1/movies/:id", 
     authMiddleware.isAuthenticated,
-    authMiddleware.isAdminOrClient,
+    authMiddleware.isAdminOrOwner,
     movieController.updateMovie
   );
 
   app.patch(
     "/mba/api/v1/movies/:id",
     authMiddleware.isAuthenticated,
-    authMiddleware.isAdminOrClient,
+    authMiddleware.isAdminOrOwner,
     movieController.updateMovie
   );
 

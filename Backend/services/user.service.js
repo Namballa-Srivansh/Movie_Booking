@@ -4,6 +4,9 @@ const { STATUS } = require("../utils/constants");
 
 const createUser = async (data) => {
   try {
+    if (data.userRole) {
+      data.userRole = data.userRole.toUpperCase();
+    }
     if (!data.userRole || data.userRole == USER_ROLE.customer) {
       if (data.userStatus && data.userStatus !== USER_STATUS.approved) {
         throw {
@@ -59,10 +62,7 @@ const updateUserRoleOrStatus = async (data, userId) => {
   try {
     let updateQuery = {};
 
-    if (data.userRole) updateQuery.userRole = data.userRole;
-    if (data.userStatus) updateQuery.userStatus = data.userStatus;
-
-    if (data.name) updateQuery.name = data.name; 
+    if (data.name) updateQuery.name = data.name;
 
     let response = await User.findByIdAndUpdate(userId, updateQuery, {
       new: true,

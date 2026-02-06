@@ -6,7 +6,7 @@ const routes = (app) => {
   app.post(
     "/mba/api/v1/theatres",
     authMiddleware.isAuthenticated,
-    authMiddleware.isAdminOrClient,
+    authMiddleware.isAdminOrOwner,
     theatreMiddleware.validateTheatreCreateRequest,
     theatreController.createTheatre,
   );
@@ -14,7 +14,7 @@ const routes = (app) => {
   app.delete(
     "/mba/api/v1/theatres/:id",
     authMiddleware.isAuthenticated,
-    authMiddleware.isAdminOrClient,
+    authMiddleware.isAdminOrOwner,
     theatreController.deleteTheatre,
   );
 
@@ -31,7 +31,7 @@ const routes = (app) => {
   app.patch(
     "/mba/api/v1/theatres/:id",
     authMiddleware.isAuthenticated,
-    authMiddleware.isAdminOrClient,
+    authMiddleware.isAdminOrOwner,
     theatreController.updateTheatre
   );
 
