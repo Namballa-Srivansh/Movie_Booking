@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const showSchema = new mongoose.Schema({
     theatreId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'Theatre'
     },
     movieId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'Movie'
     },
     timings: {
         type: String,
@@ -24,9 +26,9 @@ const showSchema = new mongoose.Schema({
     format: {
         type: String,
     }
-}, {timestamps: true});
+}, { timestamps: true });
 
-showSchema.index({theatreId: 1, movieId: 1, timings: 1}, {unique: true});
+showSchema.index({ theatreId: 1, movieId: 1, timings: 1 }, { unique: true });
 
 const Show = mongoose.model("Show", showSchema);
 

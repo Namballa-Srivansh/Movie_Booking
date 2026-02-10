@@ -43,7 +43,7 @@ const getShows = async (data) => {
     if (data.movieId) {
       filter.movieId = data.movieId;
     }
-    const response = await Show.find(filter);
+    const response = await Show.find(filter).populate("theatreId", "name").populate("movieId", "name");
     if (!response) {
       throw {
         err: "No shows found",
@@ -100,9 +100,25 @@ const updateShow = async (id, data) => {
   }
 };
 
+const getShowById = async (id) => {
+  try {
+    const response = await Show.findById(id).populate("theatreId", "name").populate("movieId", "name");
+    if (!response) {
+      throw {
+        err: "No show found",
+        code: STATUS.NOT_FOUND,
+      };
+    }
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createShow,
   getShows,
+  getShowById,
   deleteShow,
   updateShow,
 };
