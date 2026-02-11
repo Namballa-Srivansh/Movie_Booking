@@ -1,5 +1,5 @@
 const Movie = require("../models/movie.model");
-const {STATUS} = require("../utils/constants")
+const { STATUS } = require("../utils/constants")
 
 const createMovie = async (data) => {
   try {
@@ -78,17 +78,42 @@ const updateMovieById = async (id, data) => {
 const fetchMovies = async (filter) => {
   let query = {};
   if (filter.name) {
-    query.name = filter.name;
+    query.name = { $regex: filter.name, $options: "i" };
   }
-  let movies = await Movie.find(query);
 
-  if (!movies) {
+  let movies;
+
+  if (filter.page && filter.limit) {
+    const page = parseInt(filter.page) || 1;
+    const limit = parseInt(filter.limit) || 12;
+    const skip = (page - 1) * limit;
+
+    movies = await Movie.find(query).skip(skip).limit(limit);
+    const totalMovies = await Movie.countDocuments(query);
+
+    if (!movies) {
+      return {
+        err: "No movies found",
+        code: STATUS.NOT_FOUND,
+      };
+    }
+
     return {
-      err: "No movies found",
-      code: STATUS.NOT_FOUND,
+      movies,
+      totalMovies,
+      totalPages: Math.ceil(totalMovies / limit),
+      currentPage: page
     };
+  } else {
+    movies = await Movie.find(query);
+    if (!movies) {
+      return {
+        err: "No movies found",
+        code: STATUS.NOT_FOUND, // Fix: Use STATUS.NOT_FOUND instead of undefined variable
+      };
+    }
+    return movies;
   }
-  return movies;
 };
 
 module.exports = {
