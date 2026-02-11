@@ -80,7 +80,6 @@ const getTheatre = async (id) => {
 const getAllTheatres = async (data) => {
   try {
     let query = {};
-    let pagination = {};
     if (data && data.city) {
       query.city = data.city;
     }
@@ -88,26 +87,52 @@ const getAllTheatres = async (data) => {
       query.pincode = data.pincode;
     }
     if (data && data.name) {
-      query.name = data.name;
+      query.name = { $regex: data.name, $options: "i" };
     }
     if (data && data.movieId) {
       query.movies = { $all: data.movieId }
     }
-    if (data && data.limit) {
-      pagination.limit = data.limit;
-    }
-    if (data && data.skip) {
-      let perPage = data.limit ? data.limit : 3;
-      pagination.skip = data.skip * perPage;
-    }
-    const response = await Theatre.find(query, {}, pagination).populate("movies");
-    if (!response) {
+
+    if (data && data.page && data.limit) {
+      const page = parseInt(data.page) || 1;
+      const limit = parseInt(data.limit) || 12;
+      const skip = (page - 1) * limit;
+
+      const theatres = await Theatre.find(query).skip(skip).limit(limit).populate("movies");
+      const totalTheatres = await Theatre.countDocuments(query);
+
+      if (!theatres) {
+        return {
+          err: "No theatres found",
+          code: STATUS.NOT_FOUND,
+        };
+      }
+
       return {
-        err: "Theatre not found",
-        code: STATUS.NOT_FOUND,
+        theatres,
+        totalTheatres,
+        totalPages: Math.ceil(totalTheatres / limit),
+        currentPage: page
       };
+    } else {
+      let pagination = {};
+      if (data && data.limit) {
+        pagination.limit = parseInt(data.limit);
+      }
+      if (data && data.skip) {
+        let perPage = data.limit ? parseInt(data.limit) : 3;
+        pagination.skip = parseInt(data.skip) * perPage;
+      }
+
+      const response = await Theatre.find(query, {}, pagination).populate("movies");
+      if (!response) {
+        return {
+          err: "Theatre not found",
+          code: STATUS.NOT_FOUND,
+        };
+      }
+      return response;
     }
-    return response;
   } catch (err) {
     throw new Error("Error in Fetching Theatres");
   }
