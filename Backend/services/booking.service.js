@@ -63,7 +63,7 @@ const getBookings = async (data) => {
 
 const getAllBookings = async () => {
     try {
-        const response = await Booking.find();
+        const response = await Booking.find().populate('movieId theatreId userId');
         return response
     } catch (error) {
         throw error;
