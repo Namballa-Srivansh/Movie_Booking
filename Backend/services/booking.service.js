@@ -73,7 +73,7 @@ const getAllBookings = async () => {
 
 const getBookingsById = async (id, userId) => {
     try {
-        const response = await Booking.findById(id);
+        const response = await Booking.findById(id).populate('movieId theatreId');
         if (!response) {
             throw {
                 err: "No booking records found for the id",

@@ -7,23 +7,25 @@ const { STATUS, BOOKING_STATUS, PAYMENT_STATUS, USER_ROLE } = require("../utils/
 const createPayment = async (data) => {
     try {
         const booking = await Booking.findById(data.bookingId);
-        const show = await Show.findOne({
-            movieId: booking.movieId,
-            theatreId: booking.theatreId,
-            timings: booking.timings
-        })
-        if(booking.status == BOOKING_STATUS.successful) {
-            throw {
-                err: "Booking already done, cannot make a new payment against it",
-                status: STATUS.FORBIDDEN
-            }
-        }
         if (!booking) {
             throw {
                 err: "No booking found",
                 status: STATUS.NOT_FOUND
             }
         }
+        if (booking.status == BOOKING_STATUS.successful) {
+            throw {
+                err: "Booking already done, cannot make a new payment against it",
+                status: STATUS.FORBIDDEN
+            }
+        }
+
+        const show = await Show.findOne({
+            movieId: booking.movieId,
+            theatreId: booking.theatreId,
+            timings: booking.timings
+        })
+
         let bookingTime = booking.createdAt;
         let currentTime = Date.now();
 
@@ -80,11 +82,11 @@ const getAllPayments = async (userId) => {
     try {
         const user = await User.findById(userId);
         let filter = {};
-        if(user.userRole != USER_ROLE.admin) {
+        if (user.userRole != USER_ROLE.admin) {
             filter.userId = user.id;
         }
         const bookings = await Booking.find(filter, 'id');
-        const payments = await Payment.find({booking: {$in: bookings}});
+        const payments = await Payment.find({ booking: { $in: bookings } });
         return payments;
     } catch (error) {
         throw error;
