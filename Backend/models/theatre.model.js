@@ -7,9 +7,13 @@ const theatreSchema = new mongoose.Schema({
         minlength: 5,
     },
     description: String,
+    image: {
+        type: String,
+        required: false
+    },
 
     city: {
-        type: String, 
+        type: String,
         required: true
     },
     pincode: {
@@ -27,7 +31,7 @@ const theatreSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Movie'
     }
-    
-}, {timestamps: true});
+
+}, { timestamps: true });
 
 module.exports = mongoose.model('Theatre', theatreSchema);

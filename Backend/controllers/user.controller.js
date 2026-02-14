@@ -43,6 +43,7 @@ const update = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   try {
+    console.log("VerifyUser Controller - req.user:", req.user); // Debug Log
     const response = await userService.getUserById(req.user);
     successResponseBody.data = response;
     successResponseBody.message = "User verified";

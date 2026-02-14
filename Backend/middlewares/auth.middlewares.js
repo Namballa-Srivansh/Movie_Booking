@@ -40,6 +40,7 @@ const validateSigninRequest = async (req, res, next) => {
 const isAuthenticated = async (req, res, next) => {
   try {
     const token = req.headers["x-access-token"];
+    console.log("Auth Middleware - Token:", token ? "Present" : "Missing"); // Debug Log
     if (!token) {
       errResponseBody.message = "No token provided";
       return res.status(STATUS.BAD_REQUEST).json(errResponseBody);

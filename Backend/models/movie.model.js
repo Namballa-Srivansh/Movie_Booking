@@ -12,6 +12,10 @@ const movieSchema = new mongoose.Schema({
         required: true,
         minLength: 5
     },
+    poster: {
+        type: String,
+        required: false
+    },
     casts: {
         type: [String],
         required: true
@@ -33,12 +37,12 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    releaseStatus:{
+    releaseStatus: {
         type: String,
         required: true,
     },
 
-}, {timestamps: true});
+}, { timestamps: true });
 
 const Movie = mongoose.model('Movie', movieSchema);
 
