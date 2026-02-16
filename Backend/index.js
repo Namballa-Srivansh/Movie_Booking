@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const env = require('dotenv').config({quiet:true})
+const env = require('dotenv').config({ quiet: true })
 const cors = require("cors")
 const mongoose = require('mongoose');
 
@@ -11,10 +11,11 @@ const userRoutes = require("./routes/user.routes")
 const bookingRoutes = require("./routes/booking.routes");
 const showRoutes = require("./routes/show.routes");
 const paymentRoutes = require("./routes/payment.routes");
+const searchRoutes = require('./routes/search.routes');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(
@@ -37,16 +38,17 @@ userRoutes(app);     // invoking user routes
 bookingRoutes(app)  // invoking booking routes
 showRoutes(app)    // invoking show routes
 paymentRoutes(app) // invoking payment routes
+searchRoutes(app); // invoking search routes
 
 app.listen(process.env.PORT, async () => {
   console.log(`Server is running at ${process.env.PORT}`);
 
-  try{
+  try {
     await mongoose.connect(process.env.DB_URL);
     console.log("Connected to the mongo successfully");
 
-  } catch(err){
+  } catch (err) {
     console.log("Error connecting to mongo", err);
   }
-  
+
 });
