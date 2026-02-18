@@ -1,7 +1,7 @@
 const { errResponseBody } = require("../utils/responsebody");
 
 const validateUpdateUserRequest = (req, res, next) => {
-  if (!(req.body.userRole || req.body.userStatus)) {
+  if (!(req.body.userRole || req.body.userStatus || req.body.name || req.body.email || req.body.password)) {
     errResponseBody.message =
       "Malformed request, please send atleast one parameter";
     return res.status(400).json(errResponseBody);
