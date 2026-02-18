@@ -9,9 +9,53 @@ const createBooking = async (data) => {
             theatreId: data.theatreId,
             timings: data.timings
         });
-        data.totalCost = data.noOfSeats * show.price;
+
+        // Time Validation
+        const showDate = data.bookingDate ? new Date(data.bookingDate) : new Date(); // Use provided date or today
+        const currentTime = new Date();
+
+        // Parse show timing
+        const timingParts = show.timings.match(/(\d+):(\d+)\s*(AM|PM)/);
+        if (timingParts) {
+            let hours = parseInt(timingParts[1]);
+            const minutes = parseInt(timingParts[2]);
+            const period = timingParts[3];
+
+            if (period === "PM" && hours !== 12) hours += 12;
+            if (period === "AM" && hours === 12) hours = 0;
+
+            showDate.setHours(hours, minutes, 0, 0);
+        }
+
+        if (showDate < currentTime) {
+            throw {
+                err: "Cannot book tickets for a past show",
+                code: STATUS.UNPROCESSABLE_ENTITY
+            }
+        }
+
+        // Check if seats are available
+        if (data.seats && data.seats.length > 0) {
+            if (!show.bookedSeats) show.bookedSeats = [];
+            const unavailableSeats = data.seats.filter(seat => show.bookedSeats.includes(seat));
+            if (unavailableSeats.length > 0) {
+                throw {
+                    err: `Seats ${unavailableSeats.join(", ")} are already booked`,
+                    code: STATUS.UNPROCESSABLE_ENTITY
+                }
+            }
+            // Add new seats to bookedSeats
+            show.bookedSeats.push(...data.seats);
+            await show.save();
+        }
+
+        // If seats are selected, trust the totalCost from frontend (or we could recalculate if we had the logic here)
+        // Otherwise, fallback to legacy calculation
+        if (!data.seats || data.seats.length === 0) {
+            data.totalCost = data.noOfSeats * show.price;
+        }
+
         const response = await Booking.create(data);
-        await show.save();
         return response.populate('movieId theatreId');
     } catch (error) {
         console.log(error);

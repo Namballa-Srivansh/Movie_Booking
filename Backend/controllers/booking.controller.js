@@ -1,5 +1,5 @@
-const {STATUS} = require("../utils/constants")
-const {successResponseBody, errResponseBody} = require("../utils/responsebody")
+const { STATUS } = require("../utils/constants")
+const { successResponseBody, errResponseBody } = require("../utils/responsebody")
 const bookingService = require("../services/booking.service")
 
 const create = async (req, res) => {
@@ -9,9 +9,9 @@ const create = async (req, res) => {
         successResponseBody.message = "Successfully created a booking";
         successResponseBody.data = response;
         return res.status(STATUS.CREATED).json(successResponseBody);
-    } catch(err) {
+    } catch (err) {
         console.log(err)
-        if(err.err) {
+        if (err.err) {
             errResponseBody.err = err.err;
             return res.status(err.code).json(errResponseBody)
         }
@@ -26,8 +26,8 @@ const update = async (req, res) => {
         successResponseBody.data = response;
         successResponseBody.message = "Successfully updated the booking";
         return res.status(STATUS.OK).json(successResponseBody);
-    } catch(error) {
-        if(error.err) {
+    } catch (error) {
+        if (error.err) {
             errResponseBody.err = error.err;
             return res.status(error.code).json(errResponseBody);
         }
@@ -38,11 +38,11 @@ const update = async (req, res) => {
 
 const getBookings = async (req, res) => {
     try {
-        const response = await bookingService.getBookings({userId: req.user});
+        const response = await bookingService.getBookings({ userId: req.user });
         successResponseBody.data = response;
         successResponseBody.message = "Successfully fetched the bookings";
         return res.status(STATUS.OK).json(successResponseBody);
-    } catch(error) {
+    } catch (error) {
         errResponseBody.err = error;
         return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
     }
@@ -54,7 +54,7 @@ const getAllBookings = async (req, res) => {
         successResponseBody.data = response;
         successResponseBody.message = "Successfully fetched the bookings";
         return res.status(STATUS.OK).json(successResponseBody);
-    } catch(error) {
+    } catch (error) {
         errResponseBody.err = error;
         return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
     }
@@ -66,8 +66,8 @@ const getBookingById = async (req, res) => {
         successResponseBody.data = response;
         successResponseBody.message = "Successfully fetched the booking";
         return res.status(STATUS.OK).json(successResponseBody);
-    } catch(error) {
-        if(error.err) {
+    } catch (error) {
+        if (error.err) {
             errResponseBody.err = error.err;
             return res.status(error.code).json(errResponseBody);
         }

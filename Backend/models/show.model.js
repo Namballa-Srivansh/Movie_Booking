@@ -25,6 +25,14 @@ const showSchema = new mongoose.Schema({
     },
     format: {
         type: String,
+    },
+    bookedSeats: {
+        type: [String],
+        default: []
+    },
+    ticketPrice: {
+        type: Object,
+        required: false
     }
 }, { timestamps: true });
 
