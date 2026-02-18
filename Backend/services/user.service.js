@@ -63,6 +63,8 @@ const updateUserRoleOrStatus = async (data, userId) => {
     let updateQuery = {};
 
     if (data.name) updateQuery.name = data.name;
+    if (data.userStatus) updateQuery.userStatus = data.userStatus.toUpperCase();
+    if (data.userRole) updateQuery.userRole = data.userRole.toUpperCase();
 
     let response = await User.findByIdAndUpdate(userId, updateQuery, {
       new: true,
@@ -91,9 +93,23 @@ const updateUserRoleOrStatus = async (data, userId) => {
   }
 };
 
+const getAllUsers = async (data) => {
+  try {
+    let query = {};
+    if (data && data.userStatus) {
+      query.userStatus = data.userStatus.toUpperCase();
+    }
+    const response = await User.find(query);
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   createUser,
   getUserByemail,
   getUserById,
   updateUserRoleOrStatus,
+  getAllUsers,
 };

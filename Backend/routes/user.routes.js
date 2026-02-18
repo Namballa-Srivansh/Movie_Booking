@@ -21,6 +21,13 @@ const routes = (app) => {
     authMiddlewares.isAuthenticated,
     userController.getById,
   );
+
+  app.get(
+    "/mba/api/v1/users",
+    authMiddlewares.isAuthenticated,
+    authMiddlewares.isAdmin,
+    userController.getAll,
+  );
 };
 
 module.exports = routes;

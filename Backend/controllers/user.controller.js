@@ -58,8 +58,25 @@ const verifyUser = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  try {
+    const response = await userService.getAllUsers(req.query);
+    successResponseBody.data = response;
+    successResponseBody.message = "Successfully fetched all users";
+    return res.status(STATUS.OK).json(successResponseBody);
+  } catch (err) {
+    if (err.err) {
+      errResponseBody.err = err.err;
+      return res.status(err.code).json(errResponseBody);
+    }
+    errResponseBody.err = err;
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
+  }
+}
+
 module.exports = {
   update,
   getById,
   verifyUser,
+  getAll
 };
