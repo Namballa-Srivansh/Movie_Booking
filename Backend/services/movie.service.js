@@ -1,4 +1,5 @@
 const Movie = require("../models/movie.model");
+const Show = require("../models/show.model");
 const { STATUS } = require("../utils/constants")
 
 const createMovie = async (data) => {
@@ -24,6 +25,9 @@ const createMovie = async (data) => {
 
 const deleteMovie = async (id) => {
   try {
+    // Delete all shows associated with this movie first
+    await Show.deleteMany({ movieId: id });
+
     const response = await Movie.findByIdAndDelete(id);
     if (!response) {
       return {
