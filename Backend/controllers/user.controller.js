@@ -36,7 +36,7 @@ const update = async (req, res) => {
       errResponseBody.err = err.err;
       return res.status(err.code).json(errResponseBody);
     }
-    errResponseBody.err = err;
+    errResponseBody.err = err.message || err;
     return res.status(STATUS.INTERNAL_SERVER_ERROR).json(errResponseBody);
   }
 };

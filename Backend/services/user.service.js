@@ -7,6 +7,9 @@ const createUser = async (data) => {
     if (data.userRole) {
       data.userRole = data.userRole.toUpperCase();
     }
+    if (data.userStatus) {
+      data.userStatus = data.userStatus.toUpperCase();
+    }
     if (!data.userRole || data.userRole == USER_ROLE.customer) {
       if (data.userStatus && data.userStatus !== USER_STATUS.approved) {
         throw {
@@ -86,6 +89,12 @@ const updateUserRoleOrStatus = async (data, userId) => {
       });
       throw {
         err: errors,
+        code: STATUS.BAD_REQUEST,
+      };
+    }
+    if (err.code === 11000) {
+      throw {
+        err: "User with this name or email already exists",
         code: STATUS.BAD_REQUEST,
       };
     }
