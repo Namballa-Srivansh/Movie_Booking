@@ -40,7 +40,7 @@ showRoutes(app)    // invoking show routes
 paymentRoutes(app) // invoking payment routes
 searchRoutes(app); // invoking search routes
 
-app.listen(process.env.PORT, async () => {
+app.listen(process.env.PORT || 5000, async () => {
   console.log(`Server is running at ${process.env.PORT}`);
 
   try {
